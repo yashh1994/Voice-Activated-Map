@@ -161,6 +161,7 @@ function App() {
   return (
     <div className="flex flex-col items-center p-6 h-screen bg-gray-100">
       <div className="w-full max-w-lg mb-6">
+        <div className='flex items-center justify-center'>
         <input
           className="border p-3 w-full rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300 ease-in-out"
           type="text"
@@ -169,6 +170,8 @@ function App() {
           placeholder="Speech recognized here..."
           readOnly
         />
+        <button className="bg-purple-500 text-white p-3 rounded-lg w-full mt-3 flex items-center justify-center shadow-md hover:bg-purple-600 transition duration-300 ease-in-out">Search</button>
+        </div>
         <motion.button
           className={`bg-purple-500 text-white p-3 rounded-lg w-full mt-3 flex items-center justify-center shadow-md hover:bg-purple-600 transition duration-300 ease-in-out ${isListening ? 'bg-red-500' : ''}`}
           onClick={isListening ? stopRecognition : startRecognition}
