@@ -1,8 +1,14 @@
-from flask import Flask
+from flask import Flask 
+import os
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
+load_dotenv()
 
 name = 'Default'
+
+
 
 ask_response = [
     {'action': 'find_distance', 'message': "Calculating distance between 'Rajkot' and 'Junagadh'.", 'details': {'place1': 'Rajkot', 'place2': 'Junagadh'}, 'zoom': None},
@@ -43,6 +49,6 @@ def all_responses():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,port=3030)
-    print('Running on http://localhost:5000/')
+    app.run(debug=True,port=os.getenv('PORT'))
+    print(f"Running on http://localhost:{os.getenv('PORT')}/")
 
