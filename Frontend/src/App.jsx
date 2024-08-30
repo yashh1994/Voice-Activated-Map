@@ -22,12 +22,15 @@ function App() {
   recognition.continuous = true;
   recognition.interimResults = false;
 
-  recognition.onresult = (event) => {
+  recognition.onresult = (event) => async () => {
     const lastResult = event.results[event.results.length - 1];
     if (lastResult.isFinal) {
       const transcript = lastResult[0].transcript;
       setRecognizedText(transcript);
       setSearchTerm(transcript);
+      console.log("The Query is : " + transcript);
+      responce = await fetch('http://localhost:5000/ask-query/' + transcript);
+      console.log("The responce is : " + responce);
     }
   };
 
