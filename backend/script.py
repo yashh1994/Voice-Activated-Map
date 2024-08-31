@@ -35,12 +35,13 @@ def getName():
     global name
     return name
 
-@app.route('/ask-query/<qry>', methods=['POST'])
+@app.route('/ask-query/<qry>')
 def askQuery(qry):
-    if int(qry) in range(len(ask_response)):
-        return jsonify({"response": ask_response[int(qry)]})
+    if int(qry) < len(ask_response) :
+        return ask_response[int(qry)]
     else:
         return jsonify({"error": "Invalid Query"}), 400
+
 
 @app.route('/all-res')
 def all_responses():

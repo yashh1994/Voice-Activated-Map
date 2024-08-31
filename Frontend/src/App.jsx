@@ -24,6 +24,7 @@ function App() {
   const recognition = React.useRef(null);
 
   useEffect(() => {
+
     if (SpeechRecognition) {
       recognition.current = new SpeechRecognition();
       recognition.current.continuous = true;
@@ -103,8 +104,8 @@ function App() {
     setError(null);
     try {
       console.log("Qury is : " + command);
-      const response = await fetch('http://localhost:5000/ask-query/', { command });
-      console.log("Response from API is : " + response.data);
+      const response = await axios.get('http://localhost:5000/ask-query/2');
+      console.log("Response from API is : " + response);
       handleAPIResponse(response.data);
     } catch (error) {
       console.error('API request error: ', error);
@@ -215,52 +216,78 @@ function App() {
   };
 
   const handleDistanceFromCurrent = async (place2) => {
-    if (currentLocation) {
-      try {
-        const response2 = await axios.get(`https://nominatim.openstreetmap.org/search`, {
-          params: { format: 'json', q: place2 },
-        });
-        if (response2.data.length > 0) {
-          const lat2 = parseFloat(response2.data[0].lat);
-          const lon2 = parseFloat(response2.data[0].lon);
-
-          setMarkers((prevMarkers) => [
-            ...prevMarkers,
-            {
-              position: [lat2, lon2],
-              text: response2.data[0].display_name,
-              details: [`Latitude: ${lat2}`, `Longitude: ${lon2}`],
-            },
-          ]);
-
-          setPosition([
-            (currentLocation.lat + lat2) / 2,
-            (currentLocation.lon + lon2) / 2,
-          ]);
-          setZoom(5); // Adjust zoom to show both locations
-          const calculatedDistance = calculateDistance(
-            currentLocation.lat,
-            currentLocation.lon,
-            lat2,
-            lon2
-          );
-          setDistance(calculatedDistance);
-          setRoute([
-            [currentLocation.lat, currentLocation.lon],
-            [lat2, lon2],
-          ]);
-        } else {
-          setError(`Location "${place2}" not found.`);
-        }
-      } catch (error) {
-        console.error('Error calculating distance from current location:', error);
-        setError('Failed to calculate distance from current location.');
+    if (!currentLocation) {
+      // Attempt to get the current location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Set the current location
+            setCurrentLocation({
+              lat: position.coords.latitude,
+              lon: position.coords.longitude,
+            })
+            // Proceed with distance calculation
+            calculateDistanceFromCurrent(place2);
+          },
+          (error) => {
+            console.error('Error getting current location:', error);
+            setError('Failed to get current location.');
+          }
+        );
+      } else {
+        setError('Geolocation is not supported by this browser.');
       }
     } else {
-      setError('Current location is not available.');
+      // If current location is already available, perform the distance calculation
+      calculateDistanceFromCurrent(place2);
     }
   };
-
+  
+  const calculateDistanceFromCurrent = async (place2) => {
+    try {
+      const response2 = await axios.get(`https://nominatim.openstreetmap.org/search`, {
+        params: { format: 'json', q: place2 },
+      });
+  
+      if (response2.data.length > 0) {
+        const lat2 = parseFloat(response2.data[0].lat);
+        const lon2 = parseFloat(response2.data[0].lon);
+  
+        setMarkers((prevMarkers) => [
+          ...prevMarkers,
+          {
+            position: [lat2, lon2],
+            text: response2.data[0].display_name,
+            details: [`Latitude: ${lat2}`, `Longitude: ${lon2}`],
+          },
+        ]);
+  
+        setPosition([
+          (currentLocation.lat + lat2) / 2,
+          (currentLocation.lon + lon2) / 2,
+        ]);
+        setZoom(5); // Adjust zoom to show both locations
+  
+        const calculatedDistance = calculateDistance(
+          currentLocation.lat,
+          currentLocation.lon,
+          lat2,
+          lon2
+        );
+        setDistance(calculatedDistance);
+        setRoute([
+          [currentLocation.lat, currentLocation.lon],
+          [lat2, lon2],
+        ]);
+      } else {
+        setError(`Location "${place2}" not found.`);
+      }
+    } catch (error) {
+      console.error('Error calculating distance from current location:', error);
+      setError('Failed to calculate distance from current location.');
+    }
+  };
+  
   const handleReadDetails = async (location) => {
     try {
       const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
