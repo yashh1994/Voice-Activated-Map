@@ -1,14 +1,16 @@
-from flask import Flask 
+from flask import Flask, jsonify
 import os
-from dotenv import load_dotenv 
-
+from dotenv import load_dotenv
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+# Specify the origins, methods, and headers
+CORS(app, resources={r"/*": {"origins": "*"}}, methods=['GET', 'POST'], allow_headers=["Content-Type"])
+
 load_dotenv()
 
 name = 'Default'
-
-
 
 ask_response = [
     {'action': 'find_distance', 'message': "Calculating distance between 'Rajkot' and 'Junagadh'.", 'details': {'place1': 'Rajkot', 'place2': 'Junagadh'}, 'zoom': None},
@@ -33,22 +35,19 @@ def getName():
     global name
     return name
 
-
-@app.route('/ask-query/<qry>')
+@app.route('/ask-query/<qry>', methods=['POST'])
 def askQuery(qry):
     if int(qry) in range(len(ask_response)):
-        return ask_response[int(qry)]
+        return jsonify({"response": ask_response[int(qry)]})
     else:
-        return 'Invalid Query'
+        return jsonify({"error": "Invalid Query"}), 400
 
 @app.route('/all-res')
 def all_responses():
     print(ask_response)
-    return ask_response
-
-
+    return jsonify(ask_response)
 
 if __name__ == '__main__':
-    app.run(debug=True,port=os.getenv('PORT'))
-    print(f"Running on http://localhost:{os.getenv('PORT')}/")
-
+    port = os.getenv('PORT') or 5000
+    app.run(debug=True, port=port)
+    print(f"Running on http://localhost:{port}/")
