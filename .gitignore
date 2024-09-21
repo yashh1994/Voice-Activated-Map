@@ -7,26 +7,135 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Frontend
-frontend/node_modules
+# Runtime and Temporary Files
+*.pid
+*.pid.lock
+*.seed
+*.pidfile
+
+# Dependency directories
+node_modules/
+jspm_packages/
+frontend/node_modules/
+backend/node_modules/
+.pnpm-store/
+
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.exe~
+*.out
+*.app
+*.deb
+*.dmg
+*.pkg
+
+# Compiled files and Intermediate Files
+*.o
+*.obj
+*.pyc
+*.pyo
+*.pyd
+*.class
+*.jar
+*.war
+*.ear
+*.swp
+*.swo
+*.swn
+*.tmp
+*.bak
+*.tmp.*
+
+# Transpiled Files
 frontend/dist
 frontend/dist-ssr
+frontend/build
 frontend/*.local
+backend/build/
 
-# Backend
-backend/__pycache__/
-backend/*.pyc
+# Environment-specific files
+.env
+.venv
+backend/.env
 backend/env/
 backend/venv/
-backend/.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python Bytecode
+backend/__pycache__/
+backend/*.pyc
+
+# Coverage and Test Results
+coverage/
+*.lcov
+.nyc_output/
+jest/
+test-results/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+Desktop.ini
+Icon?
+.Trashes
+*.sw?
+.nfs*
 
 # Editor directories and files
 .vscode/
 !.vscode/extensions.json
 .idea/
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.sublime-project
+*.sublime-workspace
+*.iml
+*.ipr
+*.iws
+
+# IDE-specific (JetBrains, Eclipse, etc.)
+*.ipr
+*.iws
+*.iml
+.idea/
+
+# macOS Finder
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows thumbnail cache
+Thumbs.db
+ehthumbs.db
+
+# Linux trash folder
+.Trashes
+
+# Temporary Files
+*.temp
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Archive Files
+*.zip
+*.tar
+*.gz
+*.bz2
+*.xz
+*.7z
+
+# Miscellaneous
+.vagrant/
+*.lock
+*.log
+*.gz
