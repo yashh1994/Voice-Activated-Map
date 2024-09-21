@@ -109,3 +109,46 @@ def process_command(command):
 #     print(f"Command: {command}")
 #     response = process_command(command)
 #     print(f"Response: {response}")
+
+#Responses
+# Command: Where is NewYork located?
+# Corrected Command: Where is NewYork located?
+# Tokens: ['Where', 'is', 'NewYork', 'located', '?']
+# Entities: ['NewYork']
+# Response: {'action': 'find_location', 'message': "The desired location, 'NewYork', is somewhere here.", 'details': {'location': 'NewYork'}, 'zoom': None}
+
+# Command: How much is the distance between Rajkot and Junagadh?
+# Corrected Command: How much is the distance between Rajkot and Junagadh?
+# Tokens: ['How', 'much', 'is', 'the', 'distance', 'between', 'Rajkot', 'and', 'Junagadh', '?']
+# Entities: ['Rajkot', 'Junagadh']
+# Response: {'action': 'find_distance', 'message': "Calculating distance between 'Rajkot' and 'Junagadh'.", 'details': {'place1': 'Rajkot', 'place2': 'Junagadh'}, 'zoom': None}
+
+# Command: How far is Rajkot from current location?
+# Corrected Command: How far is Rajkot from current location?
+# Tokens: ['How', 'far', 'is', 'Rajkot', 'from', 'current', 'location', '?']
+# Entities: ['Rajkot']
+# Response: {'action': 'distance_from_current', 'message': "Calculating distance from current location to 'Rajkot'.", 'details': {'place1': 'current location', 'place2': 'Rajkot'}, 'zoom': None}    
+#   
+# Command: Tell me the details about Mumbai.
+# Corrected Command: Tell me the details about Mumbai.
+# Tokens: ['Tell', 'me', 'the', 'details', 'about', 'Mumbai', '.']
+# Entities: ['Mumbai']
+# Response: {'action': 'read_details', 'message': "Fetching details about 'Mumbai'.", 'details': {'location': 'Mumbai'}, 'zoom': None}
+
+# Command: Zoom in on Junagadh.
+# Corrected Command: Zoom in on Junagadh.
+# Tokens: ['Zoom', 'in', 'on', 'Junagadh', '.']
+# Entities: ['Junagadh']
+# Response: {'action': 'zoom', 'message': "Zooming in on location 'Junagadh'.", 'details': {'location': 'Junagadh', 'zoom': 'in'}, 'zoom': None}
+
+# Command: Zoom out from Rajkot.
+# Corrected Command: Zoom out from Rajkot.
+# Tokens: ['Zoom', 'out', 'from', 'Rajkot', '.']
+# Entities: ['Rajkot']
+# Response: {'action': 'zoom', 'message': "Zooming out on location 'Rajkot'.", 'details': {'location': 'Rajkot', 'zoom': 'out'}, 'zoom': None}
+
+# Command: Where is Mumbai?
+# Corrected Command: Where is Mumbai?
+# Tokens: ['Where', 'is', 'Mumbai', '?']
+# Entities: ['Mumbai']
+# Response: {'action': 'find_location', 'message': "The desired location, 'Mumbai', is somewhere here.", 'details': {'location': 'Mumbai'}, 'zoom': None}

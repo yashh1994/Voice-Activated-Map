@@ -7,6 +7,10 @@ import { motion } from 'framer-motion';
 
 
 function App() {
+
+  const port = 8080;
+
+
   const [position, setPosition] = useState([51.505, -0.09]);
   const [zoom, setZoom] = useState(13);
   const [markers, setMarkers] = useState([]);
@@ -19,11 +23,14 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+
+
   // Initialize speech recognition
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = React.useRef(null);
 
   useEffect(() => {
+
 
     if (SpeechRecognition) {
       recognition.current = new SpeechRecognition();
@@ -104,9 +111,9 @@ function App() {
     setError(null);
     try {
       console.log("Qury is : " + command);
-      const response = await axios.get('http://localhost:5000/ask-query/2');
-      console.log("Response from API is : " + response);
-      handleAPIResponse(response.data);
+      const response = await axios.get(`http://localhost:${port}/command/${command}`); 
+      console.log(response.data);
+     handleAPIResponse(response.data);
     } catch (error) {
       console.error('API request error: ', error);
       setError('Failed to process the command. Please try again.');
@@ -139,6 +146,7 @@ function App() {
   };
 
   const handleFindLocation = async (location) => {
+    console.log("Location is : " + location, zoom);
     try {
       const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
         params: {
@@ -146,6 +154,7 @@ function App() {
           q: location,
         },
       });
+      console.log(response.data[0])
       if (response.data.length > 0) {
         const { lat, lon, display_name } = response.data[0];
         const details = [
@@ -161,7 +170,6 @@ function App() {
             details,
           },
         ]);
-        setZoom(13);
       } else {
         setError(`Location "${location}" not found.`);
       }
@@ -316,7 +324,7 @@ function App() {
     }
   };
 
-  const handleZoom = (location, zoomLevel) => {
+  const handleZoom = async(location, zoomLevel) => {
     // Determine the new zoom level
     let newZoom = zoom;
     if (zoomLevel.toLowerCase() === 'in') {
@@ -324,10 +332,11 @@ function App() {
     } else if (zoomLevel.toLowerCase() === 'out') {
       newZoom = Math.max(zoom - 2, 1); // Min zoom level
     }
-
+    console.log("new Zoom is : " + newZoom);
     // Optionally, center the map on the location
+    setZoom(newZoom)
+    console.log(zoom)
     handleFindLocation(location);
-    setZoom(newZoom);
   };
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -401,7 +410,7 @@ function App() {
           <div className="mt-3 text-green-500">
             Distance: {distance} km
           </div>
-        )}
+        )}s
       </div>
       <div className="flex-1 w-full">
         <MapWrapper position={position} zoom={zoom} markers={markers} route={route} />

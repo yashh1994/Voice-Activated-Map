@@ -8,11 +8,12 @@ const MapComponent = ({ position, zoom, markers, route }) => {
   const map = useMap();
 
   useEffect(() => {
+    console.log("get the map info: "+ zoom);
     if (markers.length) {
       const bounds = L.latLngBounds(markers.map(marker => marker.position));
       map.fitBounds(bounds, { padding: [50, 50] });
     } else {
-      map.setView(position, zoom);
+      map.setView(position, 50);
     }
   }, [position, zoom, markers, map]);
 
